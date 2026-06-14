@@ -33,3 +33,5 @@ android/app/build/
 
 # Archivos temporales
 *.tmp
+
+backups/
