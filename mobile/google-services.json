@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "640129223804",
+    "project_id": "avisatec-aef94",
+    "storage_bucket": "avisatec-aef94.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:640129223804:android:455fd5362bdbb03751cdf9",
+        "android_client_info": {
+          "package_name": "com.avisatec.mobile"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDgd4wJccO7ia7yOrohe5exoRLcyI2rMec"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

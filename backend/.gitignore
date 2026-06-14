@@ -1,0 +1,21 @@
+# dependencias
+node_modules/
+
+# variables de entorno
+.env
+
+# logs
+*.log
+
+# sistema
+.DS_Store
+Thumbs.db
+
+# vscode
+.vscode/
+
+# npm
+npm-debug.log*
+
+# pruebas
+coverage/
