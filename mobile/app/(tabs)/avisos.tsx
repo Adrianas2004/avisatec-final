@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState, useCallback } from "react";
 import {
   View,
   Text,
@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
+import { useFocusEffect } from "expo-router";
 
 const API_URL = "http://163.192.134.248/api/publicaciones?fuente=manual";
 
@@ -22,7 +23,6 @@ export default function AvisosScreen() {
   const scheme = useColorScheme();
   const dark = scheme === "dark";
 
-  // ── Paleta adaptativa — igual que [id].tsx ──
   const bg            = dark ? "rgba(15,15,15,0.50)"  : "rgba(243,244,246,0.50)";
   const surfaceRaised = dark ? "#252528"              : "rgba(255,255,255,0.95)";
   const textPrimary   = dark ? "#f3f4f6"              : "#111827";
@@ -30,10 +30,9 @@ export default function AvisosScreen() {
   const textTertiary  = dark ? "#6b7280"              : "#9ca3af";
   const border        = dark ? "#ffffff12"            : "transparent";
 
-  // Chips de categoría
-  const chipBg        = dark ? "#1c1c1e" : "#e5e7eb";
-  const chipBgActive  = "#059669";
-  const chipText      = dark ? "#d1d5db" : "#374151";
+  const chipBg         = dark ? "#1c1c1e" : "#e5e7eb";
+  const chipBgActive   = "#059669";
+  const chipText       = dark ? "#d1d5db" : "#374151";
   const chipTextActive = "#fff";
 
   const categorias = [
@@ -45,11 +44,15 @@ export default function AvisosScreen() {
     "otro",
   ];
 
-  useEffect(() => {
-    cargarAvisos();
-  }, []);
+  // ── Recarga cada vez que entras a la pantalla ──
+  useFocusEffect(
+    useCallback(() => {
+      cargarAvisos();
+    }, [])
+  );
 
   const cargarAvisos = async () => {
+    setLoading(true);
     try {
       const response = await fetch(API_URL);
       const json = await response.json();
@@ -220,7 +223,6 @@ const styles = StyleSheet.create({
     fontWeight: "500",
   },
 
-  /* ── ENCABEZADO ── */
   header: {
     marginBottom: 18,
   },
@@ -236,7 +238,6 @@ const styles = StyleSheet.create({
     fontWeight: "500",
   },
 
-  /* ── FILTROS ── */
   chipsRow: {
     flexDirection: "row",
     flexWrap: "wrap",
@@ -259,7 +260,6 @@ const styles = StyleSheet.create({
     fontSize: 13,
   },
 
-  /* ── VACÍO ── */
   emptyState: {
     alignItems: "center",
     marginTop: 60,
@@ -271,7 +271,6 @@ const styles = StyleSheet.create({
     fontWeight: "500",
   },
 
-  /* ── TARJETA ── */
   card: {
     borderRadius: 18,
     marginBottom: 14,
