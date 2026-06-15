@@ -13,6 +13,11 @@ const notificacionesRoutes = require("./routes/notificaciones.routes");
 const avisosWorker = require("./workers/avisosWorker");
 const pool = require("./config/db");
 
+
+// Agrega estas líneas justo antes de "const app = express();"
+let ejecutandoMooc = false;
+let ejecutandoAvisos = false;
+
 const app = express();
 app.use(cors());
 app.use(helmet());
@@ -60,13 +65,7 @@ app.listen(PORT, () => {
   console.log(`Servidor corriendo en puerto ${PORT}`);
 });
 
-/*
-========================================
-EJECUCIÓN INICIAL
-========================================
-*/
-fetchMoocCourses();
-avisosWorker();
+
 
 /*
 ========================================
