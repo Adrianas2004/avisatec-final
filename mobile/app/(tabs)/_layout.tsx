@@ -1,24 +1,23 @@
 import { Tabs } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function TabsLayout() {
+  const insets = useSafeAreaInsets();
+
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
         tabBarActiveTintColor: "#34d399",
         tabBarInactiveTintColor: "#9ca3af",
-
-        // ─── CLAVE: deja pasar el ImageBackground del _layout raíz ───
         sceneStyle: {
           backgroundColor: "transparent",
         },
-        // ──────────────────────────────────────────────────────────────
-
         tabBarStyle: {
           position: "absolute",
-          height: 60,
-          paddingBottom: 5,
+          height: 60 + insets.bottom,
+          paddingBottom: insets.bottom + 5,
           paddingTop: 5,
           borderTopWidth: 0,
           backgroundColor: "#3f3b3b",
@@ -33,9 +32,6 @@ export default function TabsLayout() {
         },
       }}
     >
-      {/* ========================================
-          PREREGISTROS
-      ======================================== */}
       <Tabs.Screen
         name="preregistros"
         options={{
@@ -45,10 +41,6 @@ export default function TabsLayout() {
           ),
         }}
       />
-
-      {/* ========================================
-          INICIO
-      ======================================== */}
       <Tabs.Screen
         name="index"
         options={{
@@ -58,10 +50,6 @@ export default function TabsLayout() {
           ),
         }}
       />
-
-      {/* ========================================
-          INTERESES
-      ======================================== */}
       <Tabs.Screen
         name="intereses"
         options={{
@@ -71,12 +59,6 @@ export default function TabsLayout() {
           ),
         }}
       />
-
-      {/* ========================================
-          AVISOS
-      ======================================== */}
-
-
       <Tabs.Screen
         name="avisos"
         options={{
@@ -86,9 +68,6 @@ export default function TabsLayout() {
           ),
         }}
       />
-
-
-
     </Tabs>
   );
 }
