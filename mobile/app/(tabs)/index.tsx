@@ -3,6 +3,7 @@ import {
   useCallback,
   useEffect
 } from "react";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import {
   View,
@@ -44,6 +45,7 @@ export default function HomeScreen() {
 
   // Animación del anillo pulsante de la campanita
   const pulseAnim = useState(new Animated.Value(1))[0];
+  const insets = useSafeAreaInsets();
 
   function tiempoRelativo(fecha: string) {
     const ahora = new Date().getTime();
@@ -430,7 +432,11 @@ export default function HomeScreen() {
       {/* ========================================
           BOTÓN NOTIFICACIONES — con anillo pulsante
       ======================================== */}
-      <View style={styles.notificationWrapper} pointerEvents="box-none">
+      {/* ── bottom dinámico: altura del tab bar (60) + inset inferior + margen (16) ── */}
+      <View
+        style={[styles.notificationWrapper, { bottom: 60 + insets.bottom + 16 }]}
+        pointerEvents="box-none"
+      >
         {/* Anillo exterior pulsante — solo visible cuando hay no leídas */}
         {unreadCount > 0 && (
           <Animated.View
@@ -925,7 +931,7 @@ const styles = StyleSheet.create({
   notificationWrapper: {
     position: "absolute",
     right: 22,
-    bottom: 95,
+    // bottom se sobreescribe dinámicamente con insets en el JSX
     width: 68,
     height: 68,
     justifyContent: "center",
@@ -1034,12 +1040,12 @@ const styles = StyleSheet.create({
   },
 
   notificationsTitle: {
-    fontSize: 22,       // antes 20 → ahora 22
+    fontSize: 22,
     fontWeight: "bold",
   },
 
   notifSubtitle: {
-    fontSize: 14,       // antes 12 → ahora 14
+    fontSize: 14,
     color: "#059669",
     fontWeight: "600",
     marginTop: 1,
@@ -1073,12 +1079,12 @@ const styles = StyleSheet.create({
   },
 
   notificationsEmptyTitle: {
-    fontSize: 20,       // antes 18 → ahora 20
+    fontSize: 20,
     fontWeight: "700",
   },
 
   notificationsEmptyText: {
-    fontSize: 15,       // antes 14 → ahora 15
+    fontSize: 15,
     textAlign: "center",
   },
 
@@ -1092,13 +1098,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "flex-start",
     gap: 14,
-    paddingVertical: 16,    // antes 14 → ahora 16
+    paddingVertical: 16,
     paddingHorizontal: 6,
     borderRadius: 14,
   },
 
   notificationIcon: {
-    width: 48,              // antes 44 → ahora 48
+    width: 48,
     height: 48,
     borderRadius: 24,
     justifyContent: "center",
@@ -1115,25 +1121,25 @@ const styles = StyleSheet.create({
 
   /* Punto verde de no leída */
   unreadDot: {
-    width: 10,              // antes 9 → ahora 10
+    width: 10,
     height: 10,
     borderRadius: 5,
     backgroundColor: "#059669",
   },
 
   notificationItemTitle: {
-    fontSize: 16,           // antes 15 → ahora 16
+    fontSize: 16,
     fontWeight: "700",
   },
 
   notificationItemBody: {
-    fontSize: 14,           // antes 13 → ahora 14
+    fontSize: 14,
     lineHeight: 20,
     marginBottom: 6,
   },
 
   notificationItemTime: {
-    fontSize: 13,           // antes 12 → ahora 13
+    fontSize: 13,
     fontWeight: "600",
   },
 });
