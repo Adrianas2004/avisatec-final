@@ -19,6 +19,7 @@ import {
   Pressable,
   useColorScheme,
   Animated,
+  Alert
 } from "react-native";
 
 import { registerForPushNotificationsAsync } from "../../lib/notifications";
@@ -122,6 +123,7 @@ export default function HomeScreen() {
       const currentUserId = await getUsuarioId();
       if (!currentUserId) return;
       const response = await axios.get(`${API_URL}/publicaciones/recomendadas/${currentUserId}`);
+      console.log("Total cursos del backend:", response.data.length);
       let data = response.data;
       const hoy = new Date();
       data = data.filter((item: any) => {
@@ -129,6 +131,7 @@ export default function HomeScreen() {
         const fechaFin = new Date(item.fecha_fin);
         return fechaFin >= hoy;
       });
+      Alert.alert("Debug", `Backend: ${response.data.length} cursos, después filtro: ${data.length}`);
       if (search.trim()) {
         data = data.filter((item: any) =>
           item.titulo?.toLowerCase().includes(search.toLowerCase())
