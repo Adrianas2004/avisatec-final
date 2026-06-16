@@ -122,6 +122,7 @@ export default function HomeScreen() {
     try {
       const currentUserId = await getUsuarioId();
       if (!currentUserId) return;
+      Alert.alert("URL", `${API_URL}/publicaciones/recomendadas/${currentUserId}`);
       const response = await axios.get(`${API_URL}/publicaciones/recomendadas/${currentUserId}`);
       let data = response.data;
 
