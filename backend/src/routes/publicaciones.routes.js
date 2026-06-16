@@ -88,7 +88,7 @@ router.get("/recomendadas/:usuario_id", async (req, res) => {
 
       ORDER BY p.created_at DESC
 
-      LIMIT 50
+      LIMIT 200
       `,
       [usuario_id]
     );
