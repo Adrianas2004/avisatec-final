@@ -130,7 +130,7 @@ export default function HomeScreen() {
         if (!item.fecha_fin) return false;
         const fechaFin = new Date(item.fecha_fin);
         const hoy = new Date();
-        hoy.setHours(0, 0, 0, 0);
+        
         return fechaFin < hoy;
       });
       Alert.alert("Debug", `Total: ${response.data.length}\nEliminados: ${eliminados.length}\nFechas:\n${eliminados.slice(0,3).map((i:any) => i.fecha_fin).join('\n')}`);
