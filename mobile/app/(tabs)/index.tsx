@@ -129,6 +129,8 @@ export default function HomeScreen() {
       data = data.filter((item: any) => {
         if (!item.fecha_fin) return true;
         const fechaFin = new Date(item.fecha_fin);
+        const hoy = new Date();
+        hoy.setHours(0, 0, 0, 0); // ← compara solo por fecha, ignora la hora
         return fechaFin >= hoy;
       });
       Alert.alert("Debug", `Backend: ${response.data.length} cursos, después filtro: ${data.length}`);
