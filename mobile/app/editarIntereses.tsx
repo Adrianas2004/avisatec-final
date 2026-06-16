@@ -10,6 +10,7 @@ import {
   Modal,
 } from "react-native";
 
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { router } from "expo-router";
 import { API_URL } from "../constants/api";
 import { getCurrentUser } from "aws-amplify/auth";
@@ -25,13 +26,14 @@ type Categoria = {
 const CARD_SIZES = ["small", "medium", "large", "small", "large", "medium"];
 
 export default function EditarInteresesScreen() {
+  const insets = useSafeAreaInsets();
+
   const [categorias, setCategorias] = useState<Categoria[]>([]);
   const [seleccionadas, setSeleccionadas] = useState<number[]>([]);
   const [usuarioId, setUsuarioId] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
-  // ── Modal personalizado ──
   const [modalVisible, setModalVisible] = useState(false);
   const [modalConfig, setModalConfig] = useState<{
     title: string;
@@ -82,9 +84,6 @@ export default function EditarInteresesScreen() {
         `${API_URL}/users/intereses/${usuario.id}`
       );
       const interesesData = await interesesResponse.json();
-
-      console.log("INTERESES ACTUALES:");
-      console.log(interesesData);
 
       let idsSeleccionados: number[] = [];
       if (Array.isArray(interesesData) && typeof interesesData[0] === "object") {
@@ -179,9 +178,7 @@ export default function EditarInteresesScreen() {
   return (
     <View style={styles.container}>
 
-      {/* ── HEADER ── */}
       <View style={styles.headerSection}>
-
         <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
           <Ionicons name="arrow-back" size={20} color="#e5e7eb" />
         </TouchableOpacity>
@@ -232,7 +229,6 @@ export default function EditarInteresesScreen() {
         </View>
       </View>
 
-      {/* ── GRID ── */}
       <ScrollView
         contentContainerStyle={styles.grid}
         showsVerticalScrollIndicator={false}
@@ -285,8 +281,8 @@ export default function EditarInteresesScreen() {
         <View style={{ height: 110, width: "100%" }} />
       </ScrollView>
 
-      {/* ── BOTÓN FLOTANTE ── */}
-      <View style={styles.buttonWrapper}>
+      {/* ── BOTÓN FLOTANTE con inset dinámico ── */}
+      <View style={[styles.buttonWrapper, { bottom: insets.bottom + 16 }]}>
         <TouchableOpacity
           style={[
             styles.button,
@@ -312,9 +308,6 @@ export default function EditarInteresesScreen() {
         </TouchableOpacity>
       </View>
 
-      {/* ========================================
-          MODAL PERSONALIZADO — ALERTAS
-      ======================================== */}
       <Modal
         transparent
         visible={modalVisible}
@@ -323,7 +316,6 @@ export default function EditarInteresesScreen() {
       >
         <View style={styles.alertOverlay}>
           <View style={styles.alertCard}>
-
             <View
               style={[
                 styles.alertIconCircle,
@@ -358,7 +350,6 @@ export default function EditarInteresesScreen() {
             >
               <Text style={styles.alertButtonText}>OK</Text>
             </TouchableOpacity>
-
           </View>
         </View>
       </Modal>
@@ -388,7 +379,6 @@ const styles = StyleSheet.create({
     fontWeight: "500",
   },
 
-  /* ── HEADER ── */
   headerSection: {
     alignItems: "center",
     paddingHorizontal: 24,
@@ -490,7 +480,6 @@ const styles = StyleSheet.create({
     color: "#ef4444",
   },
 
-  /* ── GRID ── */
   grid: {
     flexDirection: "row",
     flexWrap: "wrap",
@@ -500,7 +489,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 
-  /* ── CARD BASE ── */
   card: {
     borderRadius: 18,
     padding: 14,
@@ -575,10 +563,8 @@ const styles = StyleSheet.create({
     color: "#6ee7b7",
   },
 
-  /* ── BOTÓN FLOTANTE ── */
   buttonWrapper: {
     position: "absolute",
-    bottom: 28,
     left: 20,
     right: 20,
   },
@@ -612,7 +598,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
 
-  /* ── MODAL ALERTA ── */
   alertOverlay: {
     flex: 1,
     backgroundColor: "rgba(0,0,0,0.65)",
