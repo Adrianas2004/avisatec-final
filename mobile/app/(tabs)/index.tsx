@@ -122,19 +122,12 @@ export default function HomeScreen() {
     try {
       const currentUserId = await getUsuarioId();
       if (!currentUserId) return;
-      Alert.alert("URL", `${API_URL}/publicaciones/recomendadas/${currentUserId}`);
+      //Alert.alert("URL", `${API_URL}/publicaciones/recomendadas/${currentUserId}`);
       const response = await axios.get(`${API_URL}/publicaciones/recomendadas/${currentUserId}`);
       let data = response.data;
 
       // ← temporal para debug
-      const eliminados = response.data.filter((item: any) => {
-        if (!item.fecha_fin) return false;
-        const fechaFin = new Date(item.fecha_fin);
-        const hoy = new Date();
-        hoy.setHours(0, 0, 0, 0);
-        return fechaFin < hoy;
-      });
-      //Alert.alert("Debug", `Total: ${response.data.length}\nEliminados: ${eliminados.length}\nFechas:\n${eliminados.slice(0,3).map((i:any) => i.fecha_fin).join('\n')}`);
+      
 
       const hoy = new Date();
       data = data.filter((item: any) => {
