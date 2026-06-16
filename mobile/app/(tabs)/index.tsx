@@ -123,22 +123,32 @@ export default function HomeScreen() {
       const currentUserId = await getUsuarioId();
       if (!currentUserId) return;
       const response = await axios.get(`${API_URL}/publicaciones/recomendadas/${currentUserId}`);
-      console.log("Total cursos del backend:", response.data.length);
       let data = response.data;
+
+      // ← temporal para debug
+      const eliminados = response.data.filter((item: any) => {
+        if (!item.fecha_fin) return false;
+        const fechaFin = new Date(item.fecha_fin);
+        const hoy = new Date();
+        hoy.setHours(0, 0, 0, 0);
+        return fechaFin < hoy;
+      });
+      Alert.alert("Debug", `Total: ${response.data.length}\nEliminados: ${eliminados.length}\nFechas:\n${eliminados.slice(0,3).map((i:any) => i.fecha_fin).join('\n')}`);
+
       const hoy = new Date();
       data = data.filter((item: any) => {
         if (!item.fecha_fin) return true;
         const fechaFin = new Date(item.fecha_fin);
-        const hoy = new Date();
-        hoy.setHours(0, 0, 0, 0); // ← compara solo por fecha, ignora la hora
+        hoy.setHours(0, 0, 0, 0);
         return fechaFin >= hoy;
       });
-      Alert.alert("Debug", `Backend: ${response.data.length} cursos, después filtro: ${data.length}`);
+
       if (search.trim()) {
         data = data.filter((item: any) =>
           item.titulo?.toLowerCase().includes(search.toLowerCase())
         );
       }
+
       setCourses(data);
     } catch (error) {
       console.log("ERROR API:", error);
